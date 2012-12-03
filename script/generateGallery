@@ -1,0 +1,35 @@
+#!/bin/sh
+
+EXPECTED_ARGS=3
+E_BADARGS=65
+
+if [ $# -ne $EXPECTED_ARGS ]
+then
+  echo "Usage: `basename $0` output.html template.html imageFolder/"
+  exit $E_BADARGS
+fi
+
+# Generate the list of files in the directory $3
+
+IFS=$(echo "\n\b") 
+
+for i in $(ls $3)
+do
+	list="$list, '$i'"
+done
+
+list="$list]"
+
+list="$(echo $list | sed "s/^, /[/")"
+
+# Remove the file $1
+
+touch $1
+rm $1
+
+# Generate the output
+
+while read line
+do
+	echo "$line" | sed "s/\/\*STATIC_GALLERY\*\//$list/g" >> $1
+done < $2
