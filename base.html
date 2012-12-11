@@ -23,7 +23,6 @@
 
 		// Set width and height when the images will be loaded
 		var image = new Image();
-		var width = 0;
 		image.src= imagePath;
 		image.index = i;
 		image.onload = function() {setSizeImage(this.index, this.width, this.height);};
