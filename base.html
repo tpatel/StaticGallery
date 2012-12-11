@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Static Photo Gallery</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="lib/jquery-1.8.3.min.js"></script>
+  <script src="lib/jquery.masonry.min.js"></script>
+</head>
+<body>
+
+<div id="container"></div>
+
+<script type="text/javascript">
+
+	// The table that contains photo with the tag
+	var tablePhotos = /*STATIC_GALLERY*/;
+
+	// Append images to the container
+	for (var i=0; i < tablePhotos.length; i++) {
+	  	var imagePath = 'photo/' + tablePhotos[i];
+	  	var imageToAppend = $('<div class="masonryImage img' + i + '" style="background-image:url(&quot;' +imagePath+ '&quot;); background-repeat:no-repeat;"></div>');
+
+		// Set width and height when the images will be loaded
+		var image = new Image();
+		var width = 0;
+		image.src= imagePath;
+		image.index = i;
+		image.onload = function() {setSizeImage(this.index, this.width, this.height);};
+
+	  	$('#container').append(imageToAppend);
+	}
+
+	// Initialization of Masonry
+	$('#container').masonry({
+		// options
+		itemSelector : '.masonryImage',
+		columnWidth : 200,
+		isAnimated: true
+	});
+
+	// Sort the images into the container
+	$('#container').masonry();
+
+	// Set the size of an image
+	// i : Number of the image
+	// w : Width of the image
+	// h : Height of the image
+	function setSizeImage (i, w, h) {
+		$('.img' + i).css('width', w + 'px');
+		$('.img' + i).css('height', h + 'px');
+		$('#container').masonry();
+	}
+
+</script>
+</body>
+</html>
